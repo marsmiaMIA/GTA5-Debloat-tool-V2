@@ -16,6 +16,30 @@ echo - Keep Story Mode completely intact
 echo.
 echo ========================================
 echo.
+
+:: -----------------------------
+:: SELECT VERSION
+:: -----------------------------
+echo Which version of GTA V is this?
+echo   [1] Legacy
+echo   [2] Enhanced
+echo.
+set /p ver=Enter 1 or 2: 
+if "%ver%"=="1" (
+    set "beexe=GTA5_BE.exe"
+) else if "%ver%"=="2" (
+    set "beexe=GTA5_Enhanced_BE.exe"
+) else (
+    echo.
+    echo [ERROR] Invalid selection. Please run the tool again and choose 1 or 2.
+    echo.
+    pause
+    exit
+)
+echo.
+echo [OK] Version selected: %ver% ^(BattlEye exe: %beexe%^)
+echo.
+
 :: Check install path
 if not exist "%dlcpath%\" (
     echo [ERROR] Could not find dlcpacks folder.
@@ -53,7 +77,7 @@ for /D %%F in ("%dlcpath%\mp*") do (
 
 :: If BattlEye still exists, not done
 if exist "BattlEye\" set "alreadyDone=0"
-if exist "GTA5_BE.exe" set "alreadyDone=0"
+if exist "%beexe%" set "alreadyDone=0"
 
 :: If all required folders are missing entirely, something is wrong - don't claim done
 for /L %%i in (0,1,9) do (
@@ -115,7 +139,7 @@ echo.
 :: REMOVE BATTLEYE
 :: -----------------------------
 echo Removing BattlEye...
-del /Q "GTA5_BE.exe" 2>nul
+del /Q "%beexe%" 2>nul
 rmdir /S /Q "BattlEye" 2>nul
 echo [OK] BattlEye removed.
 echo.
@@ -169,7 +193,7 @@ if exist "BattlEye\" (
     echo [ISSUE] BattlEye folder still exists
     set issues=1
 )
-if exist "GTA5_BE.exe" (
+if exist "%beexe%" (
     echo [ISSUE] BattlEye exe still exists
     set issues=1
 )
